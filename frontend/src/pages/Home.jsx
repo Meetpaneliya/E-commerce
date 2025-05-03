@@ -1,7 +1,7 @@
 import React from 'react';
 import Hero from '../components/home/Hero';
 import FeaturedCategories from '../components/home/FeaturedCategories';
-import FeaturedProducts from '../components/home/FeaturedProducts';
+
 import PromoSection from '../components/home/PromoSection';
 import Testimonials from '../components/home/Testimonials';
 import { Link } from 'react-router-dom';
@@ -12,8 +12,6 @@ function Home() {
       <Hero />
       
       <FeaturedCategories />
-      
-      <FeaturedProducts />
       
       {/* Special offer section */}
       <section className="py-16 bg-accent-50">

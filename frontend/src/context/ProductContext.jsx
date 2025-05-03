@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import { useAuth } from './AuthContext'; // make sure this path is correct
+import { categories } from '../data/products';
+import { useAuth } from './AuthContext'; // Ensure correct path
 
 const ProductContext = createContext(null);
 
@@ -13,19 +14,22 @@ export function ProductProvider({ children }) {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [productCategories, setProductCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const [filters, setFilters] = useState({
     category: 'all',
-    priceRange: [0, 100],
+    priceRange: [0, 10000],
     search: ''
   });
-  const [error, setError] = useState('');
+
   const { currentUser } = useAuth();
 
+  // Fetch data on mount
   useEffect(() => {
     fetchProducts();
     fetchCategories();
   }, []);
 
+  // Apply filters whenever data or filters change
   useEffect(() => {
     if (allProducts.length > 0) {
       applyFilters();
@@ -48,8 +52,7 @@ export function ProductProvider({ children }) {
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/categories`);
-      setProductCategories(res.data);
+      setProductCategories(categories); // You can later replace with API
     } catch (err) {
       console.error('Error fetching categories:', err);
       setError('Failed to load categories');
@@ -68,8 +71,10 @@ export function ProductProvider({ children }) {
           }
         }
       );
-      setAllProducts(prev => [...prev, res.data]);
-      applyFilters(); // Re-apply filters after product creation
+      const newProduct = res.data;
+      const updatedProducts = [...allProducts, newProduct];
+      setAllProducts(updatedProducts);
+      applyFilters(updatedProducts); // Apply filters after adding
       return true;
     } catch (err) {
       console.error('Create product error:', err);
@@ -78,8 +83,8 @@ export function ProductProvider({ children }) {
     }
   };
 
-  const applyFilters = () => {
-    let filtered = [...allProducts];
+  const applyFilters = (customProducts = allProducts) => {
+    let filtered = [...customProducts];
 
     // Category filter
     if (filters.category !== 'all') {
@@ -92,7 +97,7 @@ export function ProductProvider({ children }) {
     );
 
     // Search filter
-    if (filters.search) {
+    if (filters.search.trim() !== '') {
       const searchLower = filters.search.toLowerCase();
       filtered = filtered.filter(
         p =>

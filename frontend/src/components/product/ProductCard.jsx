@@ -40,7 +40,7 @@ function ProductCard({ product }) {
         <Link to={`/products/${product.id}`}>
           <div className="h-48 w-full overflow-hidden">
             <img 
-              src={product.image} 
+              src={product.image || 'https://via.placeholder.com/150'} 
               alt={product.name} 
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />

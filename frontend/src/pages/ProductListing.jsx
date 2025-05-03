@@ -16,15 +16,16 @@ function ProductListing() {
     const params = new URLSearchParams(location.search);
     const categoryParam = params.get('category');
     const searchParam = params.get('search');
-    
-    if (categoryParam) {
+  
+    if (categoryParam && categoryParam !== filters.category) {
       updateFilters({ category: categoryParam });
     }
-    
-    if (searchParam) {
+  
+    if (searchParam && searchParam !== filters.search) {
       updateFilters({ search: searchParam });
     }
   }, [location.search]);
+  
 
   const handleSearchChange = (e) => {
     updateFilters({ search: e.target.value });

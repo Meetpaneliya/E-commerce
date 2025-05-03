@@ -12,7 +12,6 @@ function ProductForm({ editingProduct, setShowAddModal, setEditingProduct }) {
     category: '',
     stock: '',
     image: '',
-    featured: false,
     nutrition: {
       calories: '',
       protein: '',
@@ -104,12 +103,14 @@ function ProductForm({ editingProduct, setShowAddModal, setEditingProduct }) {
                   className="input-field"
                   required
                 >
-                  <option value="">Select Category</option>
                   <option value="fruits">Fruits & Vegetables</option>
                   <option value="dairy">Dairy & Eggs</option>
                   <option value="bakery">Bakery</option>
                   <option value="meat">Meat & Seafood</option>
-                  <option value="pantry">Pantry</option>
+                  <option value="pantry">Pantry & Staples</option>
+                  <option value="beverages">Beverages</option>
+                  <option value="snacks">Snacks & Sweets</option>
+                  <option value="frozen">Frozen Foods</option>
                 </select>
               </div>
 
@@ -239,20 +240,6 @@ function ProductForm({ editingProduct, setShowAddModal, setEditingProduct }) {
                   />
                 </div>
               </div>
-            </div>
-
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="featured"
-                name="featured"
-                checked={formData.featured}
-                onChange={handleInputChange}
-                className="h-4 w-4 text-primary-600 border-gray-300 rounded"
-              />
-              <label htmlFor="featured" className="ml-2 text-sm text-gray-700">
-                Featured Product
-              </label>
             </div>
 
             <div className="flex justify-end gap-4">

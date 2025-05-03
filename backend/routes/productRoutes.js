@@ -1,17 +1,19 @@
 import express from 'express';
 import {
-  getProducts,
+ 
   getProductById,
   getFeaturedProducts,
   createProduct,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  getAllProducts
 } from '../controllers/productController.js';
 import { protect, admin } from '../middleware/auth.js';
 
 const router = express.Router();
 
-router.get('/', getProducts);
+
+router.get('/', getAllProducts);
 router.get('/featured', getFeaturedProducts);
 router.get('/:id', getProductById);
 router.post('/', protect, admin, createProduct);

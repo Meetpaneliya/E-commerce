@@ -8,7 +8,7 @@ function Signup() {
     email: '',
     password: '',
     confirmPassword: '',
-    role: '' 
+    role: 'user' 
   });
   const [formErrors, setFormErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -123,22 +123,6 @@ function Signup() {
               {formErrors.email && (
                 <p className="mt-1 text-sm text-error-500">{formErrors.email}</p>
               )}
-            </div>
-
-            <div className='hidden'>
-              <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-1">
-                Account Type
-              </label>
-              <select
-                id="role"
-                name="role"
-                value={formData.role}
-                onChange={handleChange}
-                className="input-field"
-              >
-                <option value="user" selected>Customer</option>
-                <option value="admin">Admin</option>
-              </select>
             </div>
             
             <div>
