@@ -125,7 +125,7 @@ function Signup() {
               )}
             </div>
 
-            <div className=''>
+            <div className='hidden'>
               <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-1">
                 Account Type
               </label>
@@ -136,7 +136,7 @@ function Signup() {
                 onChange={handleChange}
                 className="input-field"
               >
-                <option value="user">Customer</option>
+                <option value="user" selected>Customer</option>
                 <option value="admin">Admin</option>
               </select>
             </div>
