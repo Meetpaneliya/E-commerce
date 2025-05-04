@@ -3,13 +3,40 @@ import { useProducts } from '../context/ProductContext';
 import { useAuth } from '../context/AuthContext';
 import { PlusCircle, Edit2, Trash2, DollarSign, ShoppingBag, Users, TrendingUp } from 'lucide-react';
 import ProductForm from '../components/ProductForm';
+import axios from 'axios';
 
 function AdminDashboard() {
-  const { products, loading } = useProducts();
+  const { products } = useProducts();
   const { currentUser } = useAuth();
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
 
+   // ✅ 2. Edit function
+   const handleEdit = (product) => {
+    setEditingProduct(product);
+  };
+
+  // ✅ 3. Delete function
+  const handleDelete = async (id) => {
+    if (window.confirm('Are you sure you want to delete this product?')) {
+      try {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        const token = currentUser?.token;
+  
+        await axios.delete(`${import.meta.env.VITE_BASE_URL}/api/products/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+  
+        alert('Product deleted successfully!');
+      } catch (error) {
+        console.error('Error deleting product:', error);
+        alert('Failed to delete product. Please try again.');
+      }
+    }
+  };
+  
   // Mock data for dashboard stats
   const stats = {
     revenue: 15780.45,
@@ -110,7 +137,7 @@ function AdminDashboard() {
                 </thead>
                 <tbody>
                   {products.map(product => (
-                    <tr key={product.id} className="border-b border-gray-200">
+                    <tr key={product._id} className="border-b border-gray-200">
                       <td className="py-4 px-4">
                         <div className="flex items-center gap-3">
                           <img
@@ -132,12 +159,15 @@ function AdminDashboard() {
                       <td className="py-4 px-4">
                         <div className="flex items-center gap-2">
                           <button
-                            onClick={() => setEditingProduct(product)}
+                            onClick={() => handleEdit(product)}
                             className="p-2 text-gray-600 hover:text-primary-600"
                           >
                             <Edit2 size={18} />
                           </button>
-                          <button className="p-2 text-gray-600 hover:text-error-500">
+                          <button
+                            onClick={() => handleDelete(product._id)}
+                            className="p-2 text-gray-600 hover:text-error-500"
+                          >
                             <Trash2 size={18} />
                           </button>
                         </div>

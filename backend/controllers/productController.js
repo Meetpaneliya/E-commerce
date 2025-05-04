@@ -1,33 +1,33 @@
 import Product from '../models/Product.js';
 
-export const getProducts = async (req, res) => {
-  try {
-    const { category, search, minPrice, maxPrice } = req.query;
-    let query = {};
+// export const getProducts = async (req, res) => {
+//   try {
+//     const { category, search, minPrice, maxPrice } = req.query;
+//     let query = {};
 
-    if (category && category !== 'all') {
-      query.category = category;
-    }
+//     if (category && category !== 'all') {
+//       query.category = category;
+//     }
 
-    if (search) {
-      query.$or = [
-        { name: { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } }
-      ];
-    }
+//     if (search) {
+//       query.$or = [
+//         { name: { $regex: search, $options: 'i' } },
+//         { description: { $regex: search, $options: 'i' } }
+//       ];
+//     }
 
-    if (minPrice || maxPrice) {
-      query.price = {};
-      if (minPrice) query.price.$gte = Number(minPrice);
-      if (maxPrice) query.price.$lte = Number(maxPrice);
-    }
+//     if (minPrice || maxPrice) {
+//       query.price = {};
+//       if (minPrice) query.price.$gte = Number(minPrice);
+//       if (maxPrice) query.price.$lte = Number(maxPrice);
+//     }
 
-    const products = await Product.find(query);
-    res.json(products);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+//     const products = await Product.find(query);
+//     res.json(products);
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
 
 export const getAllProducts = async (req, res) => {
   try {
@@ -86,9 +86,8 @@ export const updateProduct = async (req, res) => {
 
 export const deleteProduct = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findByIdAndDelete(req.params.id);
     if (product) {
-      await product.remove();
       res.json({ message: 'Product removed' });
     } else {
       res.status(404).json({ message: 'Product not found' });
