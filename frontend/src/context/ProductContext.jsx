@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { categories } from '../data/products';
 import { useAuth } from './AuthContext'; // Ensure correct path
+import { updateProduct } from '../../../backend/controllers/productController';
 
 const ProductContext = createContext(null);
 
@@ -83,6 +84,52 @@ export function ProductProvider({ children }) {
     }
   };
 
+  const updateProduct = async (id, formData) => {
+    try {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      const token = currentUser?.token;
+
+      await axios.put(`${import.meta.env.VITE_BASE_URL}/api/products/${id}`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      await fetchProducts(); // refresh product list
+    } catch (err) {
+      console.error('Error updating product:', err);
+      throw err;
+    }
+  };
+
+  const deleteProduct = async (id) => {
+    try {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      const token = currentUser?.token;
+
+      await axios.delete(`${import.meta.env.VITE_BASE_URL}/api/products/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      // Remove from allProducts state
+      const updatedProducts = allProducts.filter((product) => product._id !== id);
+      setAllProducts(updatedProducts);
+
+      // Update filteredProducts to reflect the deleted product
+      setFilteredProducts(updatedProducts);
+      
+      // Reapply filters to the updated list (if filters are active)
+      applyFilters(updatedProducts);
+      
+    } catch (err) {
+      console.error('Error deleting product:', err);
+      setError('Failed to delete product');
+    }
+  }
+
   const applyFilters = (customProducts = allProducts) => {
     let filtered = [...customProducts];
 
@@ -137,7 +184,9 @@ export function ProductProvider({ children }) {
     getProductById,
     getFeaturedProducts,
     getRelatedProducts,
-    createProduct
+    createProduct,
+    updateProduct,
+    deleteProduct
   };
 
   return (
