@@ -160,7 +160,7 @@ export function ProductProvider({ children }) {
   };
 
   const getProductById = (id) => {
-    return allProducts.find(product => product.id === id) || null;
+    return allProducts.find(product => product._id === id) || null;
   };
 
   const getFeaturedProducts = (limit = 4) => {

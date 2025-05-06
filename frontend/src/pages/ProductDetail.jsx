@@ -1,22 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useProducts } from '../context/ProductContext';
+import { useWishlist } from '../context/WishlistContext';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { Minus, Plus, Heart, ShoppingCart, ChevronRight } from 'lucide-react';
 import ProductGrid from '../components/product/ProductGrid';
 
 function ProductDetail() {
+  const navigate = useNavigate();
   const { id } = useParams();
   const { getProductById, getRelatedProducts, loading } = useProducts();
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const { addToCart } = useCart();
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [relatedProducts, setRelatedProducts] = useState([]);
+  const { currentUser } = useAuth();
   
   useEffect(() => {
     if (!loading) {
      
       const foundProduct = getProductById(id);
+      
       setProduct(foundProduct);
       
       if (foundProduct) {
@@ -25,6 +32,23 @@ function ProductDetail() {
       }
     }
   }, [id, loading, getProductById, getRelatedProducts]);
+
+  const handleWishlistClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('Wishlist button clicked!');
+    
+    if (!currentUser) {
+      navigate('/login'); 
+      return;
+    }
+
+    if (isInWishlist(product._id)) {
+      removeFromWishlist(product._id);
+    } else {
+      addToWishlist(product._id);
+    }
+  };
 
   const handleQuantityChange = (amount) => {
     const newQuantity = quantity + amount;
@@ -192,10 +216,21 @@ function ProductDetail() {
                 <span>Add to Cart</span>
               </button>
               
-              <button className="btn-secondary py-3 flex items-center justify-center gap-2 sm:w-auto">
-                <Heart size={18} />
-                <span className="sm:sr-only md:not-sr-only">Save</span>
-              </button>
+             
+                <button 
+                          onClick={handleWishlistClick}
+                          className={`bg-white btn-secondary py-3 flex items-center justify-center gap-2 sm:w-auto ${
+                            isInWishlist(product._id) 
+                              ? 'text-red-500 hover:text-red-600' 
+                              : 'text-gray-700 hover:text-primary-500'
+                          }`}
+                          aria-label="Add to wishlist"
+                        >
+                          <Heart size={18} className={isInWishlist(product._id) ? 'fill-current' : ''} />
+                          <span className="sm:sr-only md:not-sr-only">Save</span>
+                 </button>
+               
+              
             </div>
           </div>
         </div>
