@@ -1,4 +1,6 @@
 import Wishlist from '../models/Wishlist.js';
+import Product from '../models/Product.js';
+
 
 export const getWishlist = async (req, res) => {
   try {
@@ -21,23 +23,37 @@ export const getWishlist = async (req, res) => {
 export const addToWishlist = async (req, res) => {
   try {
     const { productId } = req.body;
-    
+
+    // 1. Find the product from DB
+    const product = await Product.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    // 2. Find or create wishlist
     let wishlist = await Wishlist.findOne({ user: req.user._id });
+
     if (!wishlist) {
       wishlist = await Wishlist.create({
         user: req.user._id,
-        products: [productId]
+        products: [product._id], // Save the actual product reference
       });
-    } else if (!wishlist.products.includes(productId)) {
-      wishlist.products.push(productId);
+    } else if (!wishlist.products.includes(product._id)) {
+      wishlist.products.push(product._id);
       await wishlist.save();
     }
-    
-    res.json(wishlist.products);
+
+    // 3. Populate the wishlist with full product details
+    await wishlist.populate('products');
+
+    res.json(wishlist.products); // Send back full product data
   } catch (error) {
+    console.error('Error adding to wishlist:', error);
     res.status(500).json({ message: error.message });
   }
 };
+
 
 export const removeFromWishlist = async (req, res) => {
   try {

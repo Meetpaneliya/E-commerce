@@ -1,8 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { categories } from '../data/products';
-import { useAuth } from './AuthContext'; // Ensure correct path
-import { updateProduct } from '../../../backend/controllers/productController';
+import { useAuth } from './AuthContext'; 
 
 const ProductContext = createContext(null);
 
