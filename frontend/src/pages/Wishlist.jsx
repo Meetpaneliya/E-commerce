@@ -61,8 +61,8 @@ function Wishlist() {
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {wishlist.map(product => (
-            <div key={product.id} className="bg-white rounded-lg shadow-sm overflow-hidden">
-              <Link to={`/products/${product.id}`} className="block relative">
+            <div key={product._id} className="bg-white rounded-lg shadow-sm overflow-hidden">
+              <Link to={`/products/${product._id}`} className="block relative">
                 <img 
                   src={product.image} 
                   alt={product.name}
@@ -71,7 +71,7 @@ function Wishlist() {
               </Link>
               
               <div className="p-4">
-                <Link to={`/products/${product.id}`}>
+                <Link to={`/products/${product._id}`}>
                   <h3 className="font-medium text-gray-900 mb-1">{product.name}</h3>
                 </Link>
                 <p className="text-gray-500 text-sm mb-2">{product.unit}</p>
@@ -91,7 +91,7 @@ function Wishlist() {
                   </button>
                   
                   <button
-                    onClick={() => removeFromWishlist(product.id)}
+                    onClick={() => removeFromWishlist(product._id)}
                     className="btn-secondary p-2"
                     aria-label="Remove from wishlist"
                   >

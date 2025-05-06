@@ -15,6 +15,7 @@ function ProductDetail() {
   
   useEffect(() => {
     if (!loading) {
+     
       const foundProduct = getProductById(id);
       setProduct(foundProduct);
       

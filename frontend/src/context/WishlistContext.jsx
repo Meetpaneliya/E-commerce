@@ -30,6 +30,7 @@ export function WishlistProvider({ children }) {
             Authorization: `Bearer ${currentUser?.token}`,  // Send token in headers
           },
         });
+        console.log('Fetched wishlist:', res.data); // Log the fetched wishlist
         setWishlist(res.data); // Expected to be an array of products or productIds
       } catch (err) {
         console.error('Failed to load wishlist:', err);
@@ -43,7 +44,6 @@ export function WishlistProvider({ children }) {
 
   // Add product to wishlist
   const addToWishlist = async (productId) => {
-    
     if (!token || !currentUser) return false; // Ensure token is available
 
     try {
