@@ -28,9 +28,10 @@ export function CartProvider({ children }) {
 
   // Add item to cart
   const addToCart = (product, quantity = 1) => {
+    console.log("product", product);
     setCart(prevCart => {
       // Check if item is already in cart
-      const existingItemIndex = prevCart.findIndex(item => item.id === product.id);
+      const existingItemIndex = prevCart.findIndex(item => item._id === product._id);
       
       if (existingItemIndex >= 0) {
         // Item exists, update quantity
@@ -45,6 +46,7 @@ export function CartProvider({ children }) {
         return [...prevCart, { ...product, quantity }];
       }
     });
+    
   };
 
   // Update item quantity
@@ -56,14 +58,14 @@ export function CartProvider({ children }) {
     
     setCart(prevCart => 
       prevCart.map(item => 
-        item.id === productId ? { ...item, quantity } : item
+        item._id === productId ? { ...item, quantity } : item
       )
     );
   };
 
   // Remove item from cart
   const removeFromCart = (productId) => {
-    setCart(prevCart => prevCart.filter(item => item.id !== productId));
+    setCart(prevCart => prevCart.filter(item => item._id !== productId));
   };
 
   // Clear the entire cart

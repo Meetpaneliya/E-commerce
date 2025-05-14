@@ -24,10 +24,11 @@ function ProductDetail() {
      
       const foundProduct = getProductById(id);
       
+      
       setProduct(foundProduct);
       
       if (foundProduct) {
-        const related = getRelatedProducts(foundProduct.category, foundProduct.id);
+        const related = getRelatedProducts(foundProduct.category, foundProduct._id);
         setRelatedProducts(related);
       }
     }

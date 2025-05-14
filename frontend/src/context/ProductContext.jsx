@@ -169,7 +169,7 @@ export function ProductProvider({ children }) {
 
   const getRelatedProducts = (categoryId, currentProductId, limit = 4) => {
     return allProducts
-      .filter(p => p.category === categoryId && p.id !== currentProductId)
+      .filter(p => p.category === categoryId && p._id !== currentProductId)
       .slice(0, limit);
   };
 

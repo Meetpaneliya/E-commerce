@@ -2,6 +2,7 @@ import React from 'react';
 import ProductCard from './ProductCard';
 
 function ProductGrid({ products, loading }) {
+ 
   if (loading) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -29,7 +30,7 @@ function ProductGrid({ products, loading }) {
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       {products.map((product, index) => (
         <ProductCard
-          key={product.id || product._id || index}
+          key={ product._id || index}
           product={product}
         />
       ))}

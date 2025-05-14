@@ -7,7 +7,7 @@ import { ShoppingBag, ArrowLeft } from 'lucide-react';
 
 function Cart() {
   const { cart, clearCart } = useCart();
-
+  console.log('Cart:', cart);
   if (cart.length === 0) {
     return (
       <div className="bg-white py-12">
@@ -49,7 +49,7 @@ function Cart() {
           <div className="flex-grow">
             <div className="bg-white rounded-lg shadow-sm p-6">
               {cart.map(item => (
-                <CartItem key={item.id} item={item} />
+                <CartItem key={item._id} item={item} />
               ))}
             </div>
             

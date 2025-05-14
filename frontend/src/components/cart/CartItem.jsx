@@ -8,7 +8,7 @@ function CartItem({ item }) {
 
   const handleQuantityChange = (newQuantity) => {
     if (newQuantity >= 1) {
-      updateQuantity(item.id, newQuantity);
+      updateQuantity(item._id, newQuantity);
     }
   };
 
@@ -17,7 +17,7 @@ function CartItem({ item }) {
   return (
     <div className="flex flex-col sm:flex-row py-6 border-b border-gray-200 last:border-b-0">
       <div className="flex-shrink-0 w-full sm:w-24 h-24 bg-gray-100 rounded-md overflow-hidden mb-4 sm:mb-0">
-        <Link to={`/products/${item.id}`}>
+        <Link to={`/products/${item._id}`}>
           <img 
             src={item.image} 
             alt={item.name} 
@@ -28,7 +28,7 @@ function CartItem({ item }) {
 
       <div className="sm:ml-6 flex-1 flex flex-col sm:flex-row sm:justify-between">
         <div className="flex-1">
-          <Link to={`/products/${item.id}`}>
+          <Link to={`/products/${item._id}`}>
             <h3 className="text-base font-medium text-gray-900 hover:text-primary-600">
               {item.name}
             </h3>
@@ -67,7 +67,7 @@ function CartItem({ item }) {
 
           <button
             type="button"
-            onClick={() => removeFromCart(item.id)}
+            onClick={() => removeFromCart(item._id)}
             className="text-gray-400 hover:text-error-500 transition-colors"
             aria-label="Remove item"
           >
