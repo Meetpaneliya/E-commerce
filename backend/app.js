@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import path from 'path';
 
 // Route imports
 import authRoutes from './routes/authRoutes.js';
@@ -13,6 +14,7 @@ import orderRoutes from './routes/orderRoutes.js';
 dotenv.config();
 
 const app = express();
+const __dirname = path.resolve();
 
 // Middleware
 app.use(cors({
@@ -34,6 +36,13 @@ app.use('/api/products', productRoutes);
 //app.use('/api/cart', cartRoutes);
 app.use('/api/wishlist', wishlistRoutes);
 app.use('/api/orders', orderRoutes);
+
+// Serve static files from the React frontend app
+app.use(express.static(path.join(__dirname, '/frontend/dist')));
+// The "catchall" handler: for any request that doesn't match one above, send back React's index.html file.
+app.get('*', (_, res) => {
+  res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'));
+});
 
 // Error handling middleware
 app.use((err, req, res, next) => {
